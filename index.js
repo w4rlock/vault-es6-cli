@@ -39,7 +39,7 @@ class Vault {
    * @param {string} token to use with axios
    */
   useToken(token) {
-    if (_.isEmpty(token)) throw new Error('token is required.');
+    if (_.isEmpty(token)) throw new Error('para "token" is required.');
     this.axios.defaults.headers.common['X-Vault-Token'] = token;
   }
 
@@ -68,11 +68,12 @@ class Vault {
    * FetchSecret
    *
    * @param {string} secretPath /path to secret /some/misecretkey
+   * @returns {promise} vault result
    */
   fetchSecret(secretPath) {
     let secret = secretPath;
 
-    if (!secret) throw new Error('secretPath is required');
+    if (_.isEmpty(secret)) throw new Error('param "secretPath" is required');
     if (!secret.startsWith('/')) {
       secret = `/${secret}`;
     }
@@ -80,6 +81,50 @@ class Vault {
     return this.axios
       .get(`${SECRET_URL}${secret}`)
       .then(R.pathOr({}, ['data']));
+  }
+
+  /**
+   * Create Secret
+   *
+   * @param {string} secretPath key secret path
+   * @param {object} data object to store
+   * @returns {promise} vault created object
+   */
+  createSecret(secretPath, data) {
+    let secret = secretPath;
+
+    if (_.isEmpty(secretPath))
+      throw new Error('param "secretPath" is required');
+    if (_.isEmpty(data)) throw new Error('param "data" is required');
+
+    if (!secret.startsWith('/')) {
+      secret = `/${secret}`;
+    }
+
+    return this.axios.post(`${SECRET_URL}${secret}`, data);
+  }
+
+  /**
+   * Delete Secret
+   *
+   * @param {string} secretPath key secret path
+   * @param {object} data object to store
+   * @returns {promise} vault created object
+   */
+  deleteSecret(secretPath, data) {
+    let secret = secretPath;
+
+    if (_.isEmpty(secretPath)) {
+      throw new Error('param "secretPath" is required');
+    }
+
+    if (_.isEmpty(data)) throw new Error('param "data" is required');
+
+    if (!secret.startsWith('/')) {
+      secret = `/${secret}`;
+    }
+
+    return this.axios.delete(`${SECRET_URL}${secret}`, data);
   }
 
   /**
