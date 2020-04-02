@@ -1,6 +1,6 @@
 {
   "name": "vault-es6-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "a vault plugin",
   "main": "index.js",
   "scripts": {
