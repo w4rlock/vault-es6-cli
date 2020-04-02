@@ -13,8 +13,9 @@ class Vault {
    * @param {string} host vault host id
    * @param {string} roleId vault role id
    * @param {string} secretId vault secret id
+   * @param {boolean} debugRequest=false log request stdout
    */
-  constructor(host, roleId, secretId) {
+  constructor(host, roleId, secretId, debugRequest = false) {
     this.host = host;
     this.roleId = roleId;
     this.secretId = secretId;
@@ -22,6 +23,15 @@ class Vault {
     this.axios = axios.create({
       baseURL: `https://${this.host}`,
     });
+
+    if (debugRequest) {
+      axios.interceptors.request.use((request) => {
+        console.log('Starting Request...');
+        console.log(JSON.stringify(request));
+
+        return request;
+      });
+    }
   }
 
   /**
