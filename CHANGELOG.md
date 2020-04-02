@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/w4rlock/vault-es6-cli/compare/0.1.2...0.2.0) (2020-04-02)
+
+
+### Features
+
+* add create and remove methods ([93a6e81](https://github.com/w4rlock/vault-es6-cli/commit/93a6e8142bf1c16d21baf810a1883779aaa9806a))
+
 ### [0.1.2](https://github.com/w4rlock/vault-es6-cli/compare/0.1.1...0.1.2) (2020-04-02)
 
 
