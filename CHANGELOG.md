@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.1 (2020-04-02)
+
+
+### Features
+
+* first commit ([2ff815b](https://github.com/w4rlock/vault-es6-cli/commit/2ff815b5f354b2e6664b3972b93cb517a9a50aa2))
+
 ### [1.0.3](https://github.com/w4rlock/serverless-vault-custom-plugin/compare/1.0.2...1.0.3) (2020-03-31)
 
 
