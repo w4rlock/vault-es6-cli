@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/w4rlock/vault-es6-cli/compare/0.1.0...0.1.1) (2020-04-02)
+
+
+### Features
+
+* add interceptor request function ([1c3ffb4](https://github.com/w4rlock/vault-es6-cli/commit/1c3ffb4937ef6054ddb2210272b748566bed9801))
+
 ## [0.1.0](https://github.com/w4rlock/vault-es6-cli/compare/0.0.1...0.1.0) (2020-04-02)
 
 
