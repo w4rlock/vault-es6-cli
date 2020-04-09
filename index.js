@@ -118,10 +118,10 @@ class Vault {
       throw new Error('param "secretPath" is required');
     }
 
-    if (_.isEmpty(data)) throw new Error('param "data" is required');
+    //if (_.isEmpty(data)) throw new Error('param "data" is required');
 
     if (!secret.startsWith('/')) {
-      secret = `/${secret}`;
+      secret = `/data/${secret}`;
     }
 
     return this.axios.delete(`${SECRET_URL}${secret}`, data);
