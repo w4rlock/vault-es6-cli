@@ -74,6 +74,11 @@ class Vault {
     let secret = secretPath;
 
     if (_.isEmpty(secret)) throw new Error('param "secretPath" is required');
+
+    if (secret.startsWith(SECRET_URL)) {
+      secret = secret.replace(SECRET_URL, '');
+    }
+
     if (!secret.startsWith('/')) {
       secret = `/${secret}`;
     }
@@ -108,23 +113,20 @@ class Vault {
    * Delete Secret
    *
    * @param {string} secretPath key secret path
-   * @param {object} data object to store
    * @returns {promise} vault created object
    */
-  deleteSecret(secretPath, data) {
+  deleteSecret(secretPath) {
     let secret = secretPath;
 
     if (_.isEmpty(secretPath)) {
       throw new Error('param "secretPath" is required');
     }
 
-    //if (_.isEmpty(data)) throw new Error('param "data" is required');
-
     if (!secret.startsWith('/')) {
       secret = `/data/${secret}`;
     }
 
-    return this.axios.delete(`${SECRET_URL}${secret}`, data);
+    return this.axios.delete(`${SECRET_URL}${secret}`);
   }
 
   /**
