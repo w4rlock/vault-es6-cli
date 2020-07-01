@@ -62,7 +62,7 @@ class Vault {
       throw new Error('VAULT_HOST_IS_MISSING');
     }
 
-    if (!this.token) {
+    if (!this.usrToken) {
       if (!this.roleId || !this.secretId) {
         throw new Error('VAULT_AUTH_IS_MISSING: roleId, secretId or token');
       }
