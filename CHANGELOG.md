@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/w4rlock/vault-es6-cli/compare/0.4.0...0.5.0) (2020-07-01)
+
+
+### Bug Fixes
+
+* authentication ([efc3dd3](https://github.com/w4rlock/vault-es6-cli/commit/efc3dd3329ebc559833f310fad54bb48badfc0bb))
+
 ## [0.4.0](https://github.com/w4rlock/vault-es6-cli/compare/0.3.0...0.4.0) (2020-06-30)
 
 
