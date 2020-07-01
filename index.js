@@ -6,22 +6,76 @@ const APPROLE_LOGIN_URL = '/v1/auth/approle/login';
 const IS_TOKEN_ALIVE_URL = '/v1/auth/token/lookup-self';
 const SECRET_URL = '/v1/secret';
 
+const HEADER_TOKEN = 'X-Vault-Token';
+
 class Vault {
   /**
    * Vault Constructor
    *
-   * @param {string} host vault host id
-   * @param {string} roleId vault role id
-   * @param {string} secretId vault secret id
+   * @param {object} {host, token, roleId, secretId}
    */
-  constructor(host, roleId, secretId) {
+  constructor({ host, token, roleId, secretId }) {
     this.host = host;
     this.roleId = roleId;
     this.secretId = secretId;
+    this.usrToken = token;
     this.session = {};
+
+    this.validateConfig();
+
     this.axios = axios.create({
       baseURL: `https://${this.host}`,
     });
+
+    this.axios.interceptors.request.use(async (config) => {
+      // eslint-disable-next-line
+      console.log(`[Vault Request] - ${config.url}`);
+
+      const hasToken = config.headers[HEADER_TOKEN];
+      if (!hasToken) {
+        // user force to use an token
+        if (this.usrToken) {
+          // eslint-disable-next-line
+          config.headers[HEADER_TOKEN] = this.usrToken;
+          // fetch the token!
+          // TODO In that case the user provides an role_id and secret_id
+          // skip infinite loop because when it calls authenticate will enter
+          // again for this interceptor
+        } else if (config.url !== APPROLE_LOGIN_URL) {
+          await this.authenticate();
+          // eslint-disable-next-line
+          config.headers[HEADER_TOKEN] = this.getSessionToken();
+        }
+      }
+
+      return config;
+    });
+  }
+
+  /**
+   * Validate Vault config
+   *
+   * @param {object} config vault config host and auth
+   */
+  validateConfig() {
+    if (!this.host) {
+      throw new Error('VAULT_HOST_IS_MISSING');
+    }
+
+    if (!this.token) {
+      if (!this.roleId || !this.secretId) {
+        throw new Error('VAULT_AUTH_IS_MISSING: roleId, secretId or token');
+      }
+    }
+  }
+
+  /**
+   * Get Vault Token from Session.
+   *
+   * @returns {string} token
+   */
+  getSessionToken() {
+    return _.get(this.session, 'auth.client_token');
   }
 
   /**
@@ -40,7 +94,7 @@ class Vault {
    */
   useToken(token) {
     if (_.isEmpty(token)) throw new Error('para "token" is required.');
-    this.axios.defaults.headers.common['X-Vault-Token'] = token;
+    this.axios.defaults.headers.common[HEADER_TOKEN] = token;
   }
 
   /**
@@ -74,11 +128,6 @@ class Vault {
     let secret = secretPath;
 
     if (_.isEmpty(secret)) throw new Error('param "secretPath" is required');
-
-    if (secret.startsWith(SECRET_URL)) {
-      secret = secret.replace(SECRET_URL, '');
-    }
-
     if (!secret.startsWith('/')) {
       secret = `/${secret}`;
     }
@@ -155,7 +204,6 @@ class Vault {
       .then((data) => {
         const cliToken = _.get(data, 'auth.client_token');
         this.useToken(cliToken);
-
         this.session = data;
       });
   }
